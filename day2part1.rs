@@ -4,7 +4,7 @@ use eyre::{eyre, Result};
 use fancy_regex::Regex;
 
 fn main() -> Result<()> {
-    let re = Regex::new(r"^(\d*)\1$")?;
+    let re = Regex::new(r"^(\d*)\1{1,}$")?;
     let input = fs::read_to_string("./src/input")?;
 
     let ids = &input
@@ -21,14 +21,14 @@ fn main() -> Result<()> {
             Ok(sum + outer_acc?)
         });
 
-    println!("{}", ids);
+    println!("{:?}", ids);
     Ok(())
 }
 
 fn sum_range_repeated_digits(re: &Regex, range: Range<usize>) -> usize {
     range.fold(0, |acc, id| {
         let id_string = id.to_string();
-        if re.is_match(&id_string).expect("Failed to execute regex") {
+        if re.is_match(&id_string).expect("Failed to execute") {
             acc + id
         } else {
             acc
